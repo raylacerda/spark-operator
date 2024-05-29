@@ -49,15 +49,16 @@ spec:
         image: {{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        {{- if .Values.environments }}
-        {{- range $key, $val := .Values.environments }}
-        - name: {{ $key }}
-          value: {{ $val | quote }}
-        {{- end }}
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          {{- if .Values.environments }}
+          {{- range $key, $val := .Values.environments }}
+          - name: {{ $key }}
+            value: {{ $val | quote }}
+          {{- end }}
+          {{- end }}
         envFrom:
           {{- toYaml .Values.envFrom | nindent 10 }}
         securityContext:
